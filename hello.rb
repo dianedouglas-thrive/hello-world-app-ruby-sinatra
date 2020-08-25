@@ -10,16 +10,20 @@ require 'jwt'
 require 'money'
 require 'cachy'
 require 'redis'
+require 'byebug'
 
 
 configure do
   set :run, true
   set :environment, :development
 
+
   # We need to disable frame protection because our app lives inside an iframe.
   set :protection, except: [:http_origin, :frame_options]
 
-  use Rack::Session::Cookie, secret: ENV['SESSION_SECRET']
+  # Persist sessions across requests by setting a secret.
+  set :session_secret, ENV["SESSION_SECRET"]
+  enable :sessions
   use Rack::Logger
 
   use OmniAuth::Builder do
@@ -84,7 +88,7 @@ DataMapper.finalize.auto_upgrade!
 get '/' do
   @user = current_user
   @store = current_store
-  return render_error("Fuck. Here is session: #{session}") unless @user && @store
+  return render_error("Fuck. Can't find either the User or Store.") unless @user && @store
 
   @bc_api_url = bc_api_url
   @client_id = bc_client_id
@@ -301,7 +305,7 @@ end
 # Gets the current user from session
 def current_user
   return nil unless session[:user_id]
-  User.get(session[:user_id]) || User.get(1)
+  User.get(session[:user_id])
 end
 
 # Gets the current user's store from session
@@ -311,6 +315,7 @@ def current_store
   return nil unless session[:store_id]
   user.stores.get(session[:store_id])
 end
+
 
 # Verify given signed_payload string and return the data if valid.
 def parse_signed_payload
