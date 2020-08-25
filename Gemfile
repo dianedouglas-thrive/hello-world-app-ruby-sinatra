@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-ruby "2.4.10"
+ruby "2.2.5"
 
 gem 'bigcommerce'
 gem 'omniauth-bigcommerce', '~> 0.3.0'

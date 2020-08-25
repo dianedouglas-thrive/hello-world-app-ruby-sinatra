@@ -161,5 +161,8 @@ DEPENDENCIES
   sqlite3
   thin
 
+RUBY VERSION
+   ruby 2.2.5p319
+
 BUNDLED WITH
    1.17.3
