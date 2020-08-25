@@ -84,7 +84,7 @@ DataMapper.finalize.auto_upgrade!
 get '/' do
   @user = current_user
   @store = current_store
-  return render_error('[home] Unauthorized!') unless @user && @store
+  return render_error("Fuck something is wrong. Here is session user id. #{session[:user_id]}") unless @user && @store
 
   @bc_api_url = bc_api_url
   @client_id = bc_client_id
