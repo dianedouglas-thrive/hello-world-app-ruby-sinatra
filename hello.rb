@@ -10,7 +10,6 @@ require 'jwt'
 require 'money'
 require 'cachy'
 require 'redis'
-require 'byebug'
 
 
 configure do
